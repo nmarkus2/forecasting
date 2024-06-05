@@ -1,7 +1,18 @@
 name: forecasting-dev
 channels:
   - conda-forge
+  - pyviz
 dependencies:
   - jupyter-book
   - jupyterlab
   - sphinx-pythia-theme
+  - act-atmos
+  - xarray
+  - cmweather
+  - dask
+  - arm_pyart
+  - herbie-data
+  - matplotlib
+  - hvplot
+  - holoviews
+  - cartopy

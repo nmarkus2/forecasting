@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>How to Cite This Cookbook &#8212; Project Pythia Cookbook Template</title>
+    <title>Visualizing HRRR Model Data Over a General Area Using Herbie &#8212; Project Pythia Cookbook Template</title>
   
   
   
@@ -71,12 +71,12 @@
                 gtag('config', 'G-T52X8HNYE8');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/how-to-cite';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/herbiedata';</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Visualize Radar Wind Profile and SODAR Data" href="Deployed_Instrument_Data.html" />
-    <link rel="prev" title="(Replace_with_your_title) Cookbook" href="../README.html" />
+    <link rel="next" title="Comparing Model Wind Data to Observed Wind Data" href="model_observation_comparison.html" />
+    <link rel="prev" title="Visualize Radar Wind Profile and SODAR Data" href="Deployed_Instrument_Data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="13 June 2024"/>
@@ -220,6 +220,10 @@
   
 
   
+    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -359,13 +363,13 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preamble</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">How to Cite This Cookbook</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="how-to-cite.html">How to Cite This Cookbook</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Deployed_Instrument_Data.html">Visualize Radar Wind Profile and SODAR Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="herbiedata.html">Visualizing HRRR Model Data Over a General Area Using Herbie</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Visualizing HRRR Model Data Over a General Area Using Herbie</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_observation_comparison.html">Comparing Model Wind Data to Observed Wind Data</a></li>
 </ul>
 
@@ -396,11 +400,113 @@
 <div id="searchbox"></div>
                   <article class="bd-article">
                     
-  <section class="tex2jax_ignore mathjax_ignore" id="how-to-cite-this-cookbook">
-<h1>How to Cite This Cookbook<a class="headerlink" href="#how-to-cite-this-cookbook" title="Link to this heading"><i class="fas fa-link"></i></a></h1>
-<p>The material in this Project Pythia Cookbook is licensed for free and open consumption and reuse. All code is served under <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, while all non-code content is licensed under <a class="reference external" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0 (CC BY 4.0)</a>. Effectively, this means you are free to share and adapt this material so long as you give appropriate credit to the Cookbook authors and the Project Pythia community.</p>
-<p>The source code for the book is <a class="reference external" href="https://github.com/ProjectPythia/cookbook-template">released on GitHub</a> and archived on Zenodo. This DOI will always resolve to the latest release of the book source:</p>
-<p><a class="reference external" href="https://zenodo.org/badge/latestdoi/475509405"><img alt="DOI" src="https://zenodo.org/badge/475509405.svg" /></a></p>
+  <section class="tex2jax_ignore mathjax_ignore" id="visualizing-hrrr-model-data-over-a-general-area-using-herbie">
+<h1>Visualizing HRRR Model Data Over a General Area Using Herbie<a class="headerlink" href="#visualizing-hrrr-model-data-over-a-general-area-using-herbie" title="Link to this heading"><i class="fas fa-link"></i></a></h1>
+<p>In this notebook we will download and plot HRRR wind data for the wind profiler and sodar sites.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import Modules</span>
+<span class="kn">from</span> <span class="nn">herbie</span> <span class="kn">import</span> <span class="n">Herbie</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="downloading-the-data">
+<h2>Downloading the Data<a class="headerlink" href="#downloading-the-data" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Here you can input the date and pressure level and get the full 48-hour HRRR forecast for that day.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yr</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Year (yyyy):&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Month (mm):&#39;</span><span class="p">)</span>
+<span class="n">d</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Day (dd):&#39;</span><span class="p">)</span>
+<span class="n">date</span><span class="o">=</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">level</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Enter level (surface, 1000 mb, 925 mb, 850 mb, etc.):&#39;</span><span class="p">)</span>
+<span class="n">H</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">ds</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span>
+    <span class="n">H</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Herbie</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># model run date</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;hrrr&quot;</span><span class="p">,</span>  <span class="c1"># model name</span>
+        <span class="n">product</span><span class="o">=</span><span class="s2">&quot;prs&quot;</span><span class="p">,</span> <span class="c1">#product</span>
+        <span class="n">fxx</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>  <span class="c1"># forecast lead time</span>
+              <span class="p">))</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;surface&#39;</span><span class="p">):</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F00 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F01 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F02 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F03 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F04 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F05 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F06 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F07 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F08 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F09 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F10 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F11 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F12 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F13 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F14 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F15 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F16 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F17 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F18 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F19 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F20 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F21 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F22 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F23 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F24 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F25 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F26 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F27 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F28 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F29 ┊ GRIB2 @ aws ┊ IDX @ aws
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-data">
+<h2>Plot the Data<a class="headerlink" href="#plot-the-data" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Here we will plot the data for the area surrounding the three sites, which are denoted by the black stars.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Coordinates:</span>
+<span class="c1">#RI: 41.4456, -71.4357</span>
+<span class="c1">#CC: 42.03, -70.049</span>
+<span class="c1">#Sodar: 41.2453, -70.105</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">69.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">72</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">,</span> <span class="mi">41</span><span class="p">]),</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span> 
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> 
+                     <span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> 
+                                        <span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> 
+                     <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">BuPu</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">-</span><span class="mf">71.4357</span><span class="p">,</span> <span class="mf">41.4456</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">-</span><span class="mf">70.049</span><span class="p">,</span> <span class="mf">42.03</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">-</span><span class="mf">70.105</span><span class="p">,</span> <span class="mf">41.2453</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1"> FH </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s1">   HRRR Wind Speed at </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -434,20 +540,20 @@
                     
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../README.html"
+       href="Deployed_Instrument_Data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">(Replace_with_your_title) Cookbook</p>
+        <p class="prev-next-title">Visualize Radar Wind Profile and SODAR Data</p>
       </div>
     </a>
     <a class="right-next"
-       href="Deployed_Instrument_Data.html"
+       href="model_observation_comparison.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Visualize Radar Wind Profile and SODAR Data</p>
+        <p class="prev-next-title">Comparing Model Wind Data to Observed Wind Data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -458,6 +564,22 @@
 
               
               
+                
+                  <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-the-data">Downloading the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-data">Plot the Data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
                 
               
 
@@ -480,6 +602,37 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://binder.projectpythia.org/v2/gh/ProjectPythia/cookbook-template/main?urlpath=lab/tree/notebooks/herbiedata.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -510,7 +663,7 @@
       
       
       
-      <li><a href="https://github.com/ProjectPythia/cookbook-template/edit/main/notebooks/how-to-cite.md" target="_blank"
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/edit/main/notebooks/herbiedata.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -527,7 +680,7 @@
       
       
       
-      <li><a href="https://github.com/ProjectPythia/cookbook-template/issues/new?title=Issue%20on%20page%20%2Fnotebooks/how-to-cite.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/issues/new?title=Issue%20on%20page%20%2Fnotebooks/herbiedata.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -557,7 +710,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/how-to-cite.md" target="_blank"
+      <li><a href="../_sources/notebooks/herbiedata.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -567,7 +720,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -628,7 +781,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>

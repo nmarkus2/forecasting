@@ -1,0 +1,1293 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Comparing Model Wind Data to Observed Wind Data &#8212; Project Pythia Cookbook Template</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-pythia-theme.min.css?v=ba7ce088" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d0efeab3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T52X8HNYE8"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-T52X8HNYE8');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-T52X8HNYE8');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/model_observation_comparison';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Visualizing HRRR Model Data Over a General Area Using Herbie" href="herbiedata.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="13 June 2024"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div class="pst-scroll-pixel-helper"></div>
+    <header class="bd-header navbar navbar-dark navbar-expand-lg bg-dark fixed-top bd-navbar shadow" id="navbar-main">
+<div class="bd-header__inner bd-page-width">
+  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+   
+
+<a class="navbar-brand logo" href="https://projectpythia.org">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pythia_logo-white-rtext.svg" class="logo__image only-light" alt="Project Pythia Cookbook Template - Home"/>
+    <script>document.write(`<img src="../_static/pythia_logo-white-rtext.svg" class="logo__image only-dark" alt="Project Pythia Cookbook Template - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><ul id="navbar-main-elements" class="navbar-nav">
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://foundations.projectpythia.org">Foundations</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://cookbooks.projectpythia.org">Cookbooks</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/resource-gallery.html">Resources</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/index.html#join-us">Community</a>
+  </li>
+  
+  
+</ul></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ProjectPythia" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/project_pythia" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/channel/UCoZPBqJal5uKpO8ZiwzavCw" title="YouTube" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-youtube-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">YouTube</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+        
+        
+        
+        <div class="bd-sidebar-primary bd-sidebar">
+          
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item"><ul id="navbar-main-elements" class="navbar-nav">
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://foundations.projectpythia.org">Foundations</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://cookbooks.projectpythia.org">Cookbooks</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/resource-gallery.html">Resources</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/index.html#join-us">Community</a>
+  </li>
+  
+  
+</ul></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ProjectPythia" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/project_pythia" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/channel/UCoZPBqJal5uKpO8ZiwzavCw" title="YouTube" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-youtube-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">YouTube</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    (Replace_with_your_title) Cookbook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preamble</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="how-to-cite.html">How to Cite This Cookbook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Deployed_Instrument_Data.html">Visualize Radar Wind Profile and SODAR Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="herbiedata.html">Visualizing HRRR Model Data Over a General Area Using Herbie</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Comparing Model Wind Data to Observed Wind Data</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+        </div>
+
+        
+        <main id="main-content" class="bd-main" role="main">
+          
+
+            <div class="bd-content">
+
+              <div class="bd-article-container">
+
+                
+                  
+                  
+<div id="searchbox"></div>
+                  <article class="bd-article">
+                    
+  <section class="tex2jax_ignore mathjax_ignore" id="comparing-model-wind-data-to-observed-wind-data">
+<h1>Comparing Model Wind Data to Observed Wind Data<a class="headerlink" href="#comparing-model-wind-data-to-observed-wind-data" title="Link to this heading"><i class="fas fa-link"></i></a></h1>
+<hr class="docutils" />
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>If you have an introductory paragraph, lead with it here! Keep it short and tied to your material, then be sure to continue into the required list of topics below,</p>
+<ol class="arabic simple">
+<li><p>Brief Discussion of the WFIP3 Project</p></li>
+<li><p>Downloading and Plotting Model Data with Herbie</p></li>
+<li><p>Downloading and Plotting Observed Wind Data</p></li>
+<li><p>Comparing Model and Observed Data</p></li>
+</ol>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>This notebook will involve use of Herbie and the Atmospheric Community Toolkit (ACT) to download/read in data.  It also relies on MetPy to handle a couple calculations and MatPlotLib for plotting purposes.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concepts</p></th>
+<th class="head"><p>Importance</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ACT</p></td>
+<td><p>Necessary</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Herbie</p></td>
+<td><p>Necessary</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>MetPy</p></td>
+<td><p>Helpful</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>NumPy</p></td>
+<td><p>Helpful</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>MatPlotLib</p></td>
+<td><p>Necessary</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Time to learn</strong>: 60 Minutes</p></li>
+<li><p><strong>System requirements</strong> (Preferably the latest version of each):</p>
+<ul>
+<li><p>Python</p></li>
+<li><p>ACT</p></li>
+<li><p>MetPy</p></li>
+<li><p>Herbie</p></li>
+<li><p>numpy</p></li>
+<li><p>matplotlib</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">act</span>
+<span class="kn">from</span> <span class="nn">herbie</span> <span class="kn">import</span> <span class="n">Herbie</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="brief-discussion-of-the-wfip3-project">
+<h2>Brief Discussion of the WFIP3 Project<a class="headerlink" href="#brief-discussion-of-the-wfip3-project" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+</section>
+<hr class="docutils" />
+<section id="downloading-and-plotting-model-data-with-herbie">
+<h2>Downloading and Plotting Model Data with Herbie<a class="headerlink" href="#downloading-and-plotting-model-data-with-herbie" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>We will begin by first looking at model data using a module called Herbie.  Herbie allows us to retrieve archived data from several models, but we will be focusing on the High Resolution Rapid Refresh (HRRR) model.  For now let’s just focus on the 24-hour forecast.  You will be asked to input a year, month, and day.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#For best results, try  dates within the range 04/17/2024-05/15/2024 </span>
+<span class="n">yr</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Year (yyyy):&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Month (mm):&#39;</span><span class="p">)</span>
+<span class="n">dd</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Day (dd):&#39;</span><span class="p">)</span>
+<span class="n">H</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">ds</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
+    <span class="n">H</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Herbie</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">dd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># model run date</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;hrrr&quot;</span><span class="p">,</span>  <span class="c1"># model name</span>
+        <span class="n">product</span><span class="o">=</span><span class="s2">&quot;prs&quot;</span><span class="p">,</span> <span class="c1">#product</span>
+        <span class="n">fxx</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>  <span class="c1"># forecast lead time</span>
+              <span class="p">))</span>
+    <span class="c1">#Keep level set to 1000 mb since that&#39;s the closest level to the observed data</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:1000 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F00 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F01 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F02 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F03 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F04 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F05 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F06 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F07 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F08 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F09 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F10 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F11 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F12 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F13 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F14 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F15 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F16 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F17 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F18 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F19 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F20 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F21 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F22 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F23 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F24 ┊ GRIB2 @ aws ┊ IDX @ aws
+</pre></div>
+</div>
+</div>
+</div>
+<section id="subsetting-for-the-three-sites">
+<h3>Subsetting for the Three Sites<a class="headerlink" href="#subsetting-for-the-three-sites" title="Link to this heading"><i class="fas fa-link"></i></a></h3>
+<p>Here we will subset the data to only the three observation sites:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I want to find the speed at a certain lat/lon point.</span>
+<span class="c1">#Coordinates:</span>
+<span class="c1">#Rhode Island: 41.4456, -71.4357</span>
+<span class="c1">#Cape Cod: 42.03, -70.049</span>
+<span class="c1">#Sodar: 41.2453, -70.105</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">41.4456</span><span class="p">,</span> <span class="mf">42.03</span><span class="p">,</span> <span class="mf">41.2453</span><span class="p">]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">71.4357</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.049</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.105</span><span class="p">]</span>
+<span class="n">point_ds</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
+    <span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">180</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="c1"># First, find the index of the grid point nearest a specific lat/lon.   </span>
+        <span class="n">abslat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="o">-</span><span class="n">lat</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
+        <span class="n">abslon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="o">-</span><span class="n">lon</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">abslon</span><span class="p">,</span> <span class="n">abslat</span><span class="p">)</span>
+        <span class="p">([</span><span class="n">yloc</span><span class="p">],</span> <span class="p">[</span><span class="n">xloc</span><span class="p">])</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+        <span class="c1"># Now I can use that index location to get the values at the x/y diminsion</span>
+        <span class="n">point_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xloc</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yloc</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we calculate the wind speed and direction for each time at each site:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rhod_spd</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">caco_spd</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">sodar_spd</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">rhod_dir</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">caco_dir</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">sodar_dir</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">times</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">rhod_spd</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">caco_spd</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">sodar_spd</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">rhod_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">caco_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">sodar_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_ds</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">valid_time</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-the-data">
+<h3>Plotting the Data<a class="headerlink" href="#plotting-the-data" title="Link to this heading"><i class="fas fa-link"></i></a></h3>
+<p>Now it’s time to plot the variables.  First we will look at wind speed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">rhod_spd</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Speed at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">caco_spd</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Speed at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sodar_spd</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Speed at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_HRRRspd.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bb797fc0798b05748b13b57532e68b10df45d5ea05deaa0afdb446d33955bc86.png" src="../_images/bb797fc0798b05748b13b57532e68b10df45d5ea05deaa0afdb446d33955bc86.png" />
+</div>
+</div>
+<p>And now wind direction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">rhod_dir</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Direction at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">caco_dir</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Direction at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sodar_dir</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;HRRR 1000 mb Wind Direction at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_HRRRdir.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f3cc40481c05ea2155b4dd89b402ec6feeaeb5e61920620b5b7454fe350222a2.png" src="../_images/f3cc40481c05ea2155b4dd89b402ec6feeaeb5e61920620b5b7454fe350222a2.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="downloading-and-plotting-observed-wind-data">
+<h2>Downloading and Plotting Observed Wind Data<a class="headerlink" href="#downloading-and-plotting-observed-wind-data" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>We have our model data downloaded and plotted, now it’s time to do the same with our observed data from the wind profilers and sodar.  <strong>NOTE:</strong> If an error occurs here, it is likely due to the datafile for your date of choice not being available for one or more instruments.  You might have to go back a few times and try different dates.  Yes, it can get frustrating.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Read in the Rhode Island Data.</span>
+<span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span> <span class="o">=</span> <span class="n">act</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_psl_wind_profiler</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../data/rhod-rwp-raw/rhod.rwp.z01.00.</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s2">.000000.winds.cns&quot;</span><span class="p">,</span> 
+                                         <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1">#Read in the Cape Cod data.</span>
+<span class="n">ds3</span><span class="p">,</span> <span class="n">ds4</span> <span class="o">=</span> <span class="n">act</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_psl_wind_profiler</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../data/caco-rwp-raw/caco.rwp.z01.00.</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s2">.000000.winds.cns&quot;</span><span class="p">,</span> 
+                                         <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Call the read_sodar function.</span>
+<span class="c1"># More information on the sodar can be found here:</span>
+<span class="c1"># https://www.scintec.com/products/flat-array-sodar-mfas/</span>
+<span class="n">ds5</span> <span class="o">=</span> <span class="n">act</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_mfas_sodar</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../data/nant-sodar-raw/nant.sodar.z01.00.</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">.000000.mnd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\nickm\miniconda3\envs\forecasting-dev\Lib\site-packages\xarray\core\dataset.py:4743: UserWarning: No index created for dimension time because variable time is not a coordinate. To create an index for time, please first call `.set_coords(&#39;time&#39;)` on this object.
+  warnings.warn(
+C:\Users\nickm\miniconda3\envs\forecasting-dev\Lib\site-packages\xarray\core\dataset.py:4743: UserWarning: No index created for dimension time because variable time is not a coordinate. To create an index for time, please first call `.set_coords(&#39;time&#39;)` on this object.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<section id="subsetting-and-plotting">
+<h3>Subsetting and Plotting<a class="headerlink" href="#subsetting-and-plotting" title="Link to this heading"><i class="fas fa-link"></i></a></h3>
+<p>Now we need to subset the data from each instrument to similar heights and then we can plot it up.  Again, we will plot wind speed first:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds1_height</span><span class="o">=</span><span class="n">ds1</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">HT</span><span class="o">=</span><span class="mf">0.195</span><span class="p">)</span>
+<span class="n">ds3_height</span><span class="o">=</span><span class="n">ds3</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">HT</span><span class="o">=</span><span class="mf">0.192</span><span class="p">)</span>
+<span class="n">ds5_height</span><span class="o">=</span><span class="n">ds5</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">height</span> <span class="o">=</span> <span class="mi">190</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds1_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds1_height</span><span class="o">.</span><span class="n">SPD</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Speed at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds3_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds3_height</span><span class="o">.</span><span class="n">SPD</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Speed at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span> <span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds5_height</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Speed at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_Obsspd.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5dbf81dbdbea6c075f4e2594b2e2b79c3195cf5f3b61cbb06f5c0d7100ac4090.png" src="../_images/5dbf81dbdbea6c075f4e2594b2e2b79c3195cf5f3b61cbb06f5c0d7100ac4090.png" />
+</div>
+</div>
+<p>And once again, wind direction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds1_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds1_height</span><span class="o">.</span><span class="n">DIR</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Direction at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds3_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds3_height</span><span class="o">.</span><span class="n">DIR</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Direction at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds5_height</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs Wind Direction at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_Obsdir.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c03b80184b7a467b777b175f711672d8c8c56392c04cf260f26feed549d26bc9.png" src="../_images/c03b80184b7a467b777b175f711672d8c8c56392c04cf260f26feed549d26bc9.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="comparing-model-and-observed-data">
+<h2>Comparing Model and Observed Data<a class="headerlink" href="#comparing-model-and-observed-data" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Here is the good stuff.  This is where we put everything together, looking at both the model and observed wind data on the same graph.  First we will compare the wind speed data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds1_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds1_height</span><span class="o">.</span><span class="n">SPD</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">rhod_spd</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Speed at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds3_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds3_height</span><span class="o">.</span><span class="n">SPD</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">caco_spd</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Speed at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds5_height</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sodar_spd</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Speed at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_Comparisonspd.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ed422689ce2f98463f456619378036091d6904e82a44bfb008e43326077b5604.png" src="../_images/ed422689ce2f98463f456619378036091d6904e82a44bfb008e43326077b5604.png" />
+</div>
+</div>
+<p>Finally, we will compare the wind direction data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds1_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds1_height</span><span class="o">.</span><span class="n">DIR</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">rhod_dir</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Direction at Rhode Island RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds3_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds3_height</span><span class="o">.</span><span class="n">DIR</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">caco_dir</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Direction at Cape Cod RWP site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ds5_height</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sodar_dir</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HRRR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compared Wind Direction at SODAR site&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Direction (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_Comparisondir.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/440a1c0e2f7d6359cc0cf1d9f0eb64fddb119528e71f375f325c4445751a6b81.png" src="../_images/440a1c0e2f7d6359cc0cf1d9f0eb64fddb119528e71f375f325c4445751a6b81.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sodar_spd2</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">sodar_dir2</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">sodar_spd2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sodar_spd</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
+        <span class="n">sodar_dir2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sodar_dir</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
+<span class="n">zero_line</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">144</span><span class="p">):</span>
+    <span class="n">zero_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">sodar_spd2</span><span class="o">-</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model-Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">zero_line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Model Error (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">sodar_dir2</span><span class="o">-</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model-Obs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds5_height</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">zero_line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Model Error (deg)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">dd</span><span class="si">}</span><span class="s1">_MEsodar.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5cdaccd107689cd6b760ee1f21477c90cd9765eb0520988b33445921babcb114.png" src="../_images/5cdaccd107689cd6b760ee1f21477c90cd9765eb0520988b33445921babcb114.png" />
+</div>
+</div>
+<p>We also suggest checking out Jupyter Book’s <a class="reference external" href="https://jupyterbook.org/content/metadata.html#jupyter-cell-tags">brief demonstration</a> on adding cell tags to your cells in Jupyter Notebook, Lab, or manually. Using these cell tags can allow you to <a class="reference external" href="https://jupyterbook.org/interactive/hiding.html">customize</a> how your code content is displayed and even <a class="reference external" href="https://jupyterbook.org/content/execute.html#dealing-with-code-that-raises-errors">demonstrate errors</a> without altogether crashing our loyal army of machines!</p>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Add one final <code class="docutils literal notranslate"><span class="pre">---</span></code> marking the end of your body of content, and then conclude with a brief single paragraph summarizing at a high level the key pieces that were learned and how they tied to your objectives. Look to reiterate what the most important takeaways were.</p>
+<section id="whats-next">
+<h3>What’s next?<a class="headerlink" href="#whats-next" title="Link to this heading"><i class="fas fa-link"></i></a></h3>
+<p>Let Jupyter book tie this to the next (sequential) piece of content that people could move on to down below and in the sidebar. However, if this page uniquely enables your reader to tackle other nonsequential concepts throughout this book, or even external content, link to it here!</p>
+</section>
+</section>
+<section id="resources-and-references">
+<h2>Resources and references<a class="headerlink" href="#resources-and-references" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Finally, be rigorous in your citations and references as necessary. Give credit where credit is due. Also, feel free to link to relevant external material, further reading, documentation, etc. Then you’re done! Give yourself a quick review, a high five, and send us a pull request. A few final notes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">&gt;</span> <span class="pre">Restart</span> <span class="pre">Kernel</span> <span class="pre">and</span> <span class="pre">Run</span> <span class="pre">All</span> <span class="pre">Cells...</span></code> to confirm that your notebook will cleanly run from start to finish</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">&gt;</span> <span class="pre">Restart</span> <span class="pre">Kernel</span> <span class="pre">and</span> <span class="pre">Clear</span> <span class="pre">All</span> <span class="pre">Outputs...</span></code> before committing your notebook, our machines will do the heavy lifting</p></li>
+<li><p>Take credit! Provide author contact information if you’d like; if so, consider adding information here at the bottom of your notebook</p></li>
+<li><p>Give credit! Attribute appropriate authorship for referenced code, information, images, etc.</p></li>
+<li><p>Only include what you’re legally allowed: <strong>no copyright infringement or plagiarism</strong></p></li>
+</ul>
+<p>Thank you for your contribution!</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                  </article>
+
+                
+                
+
+                
+                
+                  <footer class="prev-next-footer">
+                    
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="herbiedata.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Visualizing HRRR Model Data Over a General Area Using Herbie</p>
+      </div>
+    </a>
+</div>
+                  </footer>
+                
+              </div>
+
+              
+              
+                
+                  <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-discussion-of-the-wfip3-project">Brief Discussion of the WFIP3 Project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-and-plotting-model-data-with-herbie">Downloading and Plotting Model Data with Herbie</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subsetting-for-the-three-sites">Subsetting for the Three Sites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-data">Plotting the Data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-and-plotting-observed-wind-data">Downloading and Plotting Observed Wind Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subsetting-and-plotting">Subsetting and Plotting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-model-and-observed-data">Comparing Model and Observed Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whats-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources-and-references">Resources and references</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+                
+              
+
+
+                
+                <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://binder.projectpythia.org/v2/gh/ProjectPythia/cookbook-template/main?urlpath=lab/tree/notebooks/model_observation_comparison.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/edit/main/notebooks/model_observation_comparison.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/issues/new?title=Issue%20on%20page%20%2Fnotebooks/model_observation_comparison.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/model_observation_comparison.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+            </div>
+
+            <footer class="bd-footer-content">
+              
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By the <a href="https://projectpythia.org/">Project Pythia</a> Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 13 June 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+            </footer>
+
+        </main>
+    </div>
+  </div>
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+     
+  
+  
+  
+  
+    <div class="footer-items__start">
+      <div class="container-fluid m-0 p-0">
+      
+        <div class="footer-item">
+  <div class="container-fluid footer-logos">
+    <div class="container-xl">
+      <div class="row d-flex flex-wrap align-items-center">
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="NCAR" src="../_images/NSF-NCAR_Lockup-UCAR-Dark_102523.svg" style="width: 100%">
+        </div>
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="Unidata" src="../_images/Unidata_logo_horizontal_1200x300.svg" style="width: 100%">
+        </div>
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="UAlbany" src="../_images/UAlbany-A2-logo-purple-gold.svg" style="width: 100%">
+        </div>
+      </div>
+    </div>
+  </div></div>
+      
+        <div class="footer-item">  <div class="container-fluid footer-info">
+    <div class="container-xl">
+      <div class="d-flex justify-content-center">
+        <p class="py-1 m-0">
+            &copy;&nbsp;2024.
+        
+          By the <a href="https://projectpythia.org/">Project Pythia</a> Community.
+        
+          Last updated on 13 June 2024.
+        </p>
+      </div>
+    </div>
+  </div></div>
+      
+        <div class="footer-item"><div class="container-fluid footer-extra">
+  <div class="container">
+    <center>
+      Theme by <a href="https://projectpythia.org">Project Pythia</a>. All code
+      in Pythia Cookbooks is licensed under
+      <a href="https://opensource.org/license/apache-2-0">Apache 2.0</a>. All
+      other non-code content is licensed under
+      <a href="https://creativecommons.org/licenses/by/4.0/">
+        Creative Commons BY 4.0 (CC BY 4.0)</a
+      >.
+    </center>
+    <br /><br />
+    <div class="row">
+      <p class="m-0">
+        <img
+          src="../_static/footer-logo-nsf.png"
+          style="float: left; width: 60px; height: 60px; margin-right: 1rem"
+        />
+        This material is based upon work supported by the National Science
+        Foundation under Grant Nos. 2026863 and 2026899. Any opinions, findings,
+        and conclusions or recommendations expressed in this material are those
+        of the author(s) and do not necessarily reflect the views of the
+        National Science Foundation.
+      </p>
+    </div>
+  </div>
+</div></div>
+      
+      </div>
+    </div>
+  
+
+  </footer>
+  </body>
+</html>

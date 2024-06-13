@@ -7,3 +7,6 @@ parts:
   - caption: Introduction
     chapters:
       - file: notebooks/notebook-template
+      - file: notebooks/Deployed_Instrument_Data.ipynb
+      - file: notebooks/herbiedata.ipynb
+      - file: notebooks/model_observation_comparison.ipynb

@@ -17,7 +17,7 @@ dependencies:
   - holoviews
   - cartopy
   - numpy
-  - datetime
+  - DateTime
   - metpy
   - IPython
   - imageio

@@ -16,3 +16,8 @@ dependencies:
   - hvplot
   - holoviews
   - cartopy
+  - numpy
+  - datetime
+  - metpy
+  - IPython
+  - imageio

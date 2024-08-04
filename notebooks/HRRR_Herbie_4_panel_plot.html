@@ -1,0 +1,1673 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Create HRRR Four-Panel Plots using Herbie &#8212; Project Pythia Cookbook Template</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-pythia-theme.min.css?v=ba7ce088" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d0efeab3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T52X8HNYE8"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-T52X8HNYE8');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-T52X8HNYE8');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/HRRR_Herbie_4_panel_plot';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="4 August 2024"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div class="pst-scroll-pixel-helper"></div>
+    <header class="bd-header navbar navbar-dark navbar-expand-lg bg-dark fixed-top bd-navbar shadow" id="navbar-main">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://projectpythia.org">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pythia_logo-white-rtext.svg" class="logo__image only-light" alt="Project Pythia Cookbook Template - Home"/>
+    <script>document.write(`<img src="../_static/pythia_logo-white-rtext.svg" class="logo__image only-dark" alt="Project Pythia Cookbook Template - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><ul id="navbar-main-elements" class="navbar-nav">
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://foundations.projectpythia.org">Foundations</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://cookbooks.projectpythia.org">Cookbooks</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/resource-gallery.html">Resources</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/index.html#join-us">Community</a>
+  </li>
+  
+  
+</ul></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ProjectPythia" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/project_pythia" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/channel/UCoZPBqJal5uKpO8ZiwzavCw" title="YouTube" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-youtube-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">YouTube</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+        
+        
+        
+          
+        
+        <div class="bd-sidebar-primary bd-sidebar">
+          
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item"><ul id="navbar-main-elements" class="navbar-nav">
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://foundations.projectpythia.org">Foundations</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://cookbooks.projectpythia.org">Cookbooks</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/resource-gallery.html">Resources</a>
+  </li>
+  
+  <li class="nav-item">
+    
+    
+    
+    <a class="nav-link nav-internal" href="https://projectpythia.org/index.html#join-us">Community</a>
+  </li>
+  
+  
+</ul></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ProjectPythia" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/project_pythia" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/channel/UCoZPBqJal5uKpO8ZiwzavCw" title="YouTube" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-youtube-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">YouTube</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    (Replace_with_your_title) Cookbook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preamble</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="how-to-cite.html">How to Cite This Cookbook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Deployed_Instrument_Data.html">Visualize Radar Wind Profile and SODAR Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="herbiedata.html">Visualizing HRRR Model Data Over a General Area Using Herbie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_observation_comparison.html">Comparing Model Wind Data to Observed Wind Data</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+        </div>
+
+        
+        <main id="main-content" class="bd-main" role="main">
+          
+
+            <div class="bd-content">
+
+              <div class="bd-article-container">
+
+                
+                  
+                  
+<div id="searchbox"></div>
+                  <article class="bd-article">
+                    
+  <section class="tex2jax_ignore mathjax_ignore" id="create-hrrr-four-panel-plots-using-herbie">
+<h1>Create HRRR Four-Panel Plots using Herbie<a class="headerlink" href="#create-hrrr-four-panel-plots-using-herbie" title="Link to this heading"><i class="fas fa-link"></i></a></h1>
+<p>This notebook will allow us to plot four-panel upper-air plots using HRRR model data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import Modules</span>
+<span class="kn">from</span> <span class="nn">herbie</span> <span class="kn">import</span> <span class="n">Herbie</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">import</span> <span class="nn">imageio.v2</span> <span class="k">as</span> <span class="nn">imageio</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">IPImage</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we will input our date and number of forecast hours.  It is usually not necessary to have a plot for every single forecast hour, as we are simply trying to see how the general synoptic pattern evolves over the course of a day or two.  We will stick with a 6-hour forecast interval.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yr</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Year (yyyy):&#39;</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Month (mm):&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Day (dd):&#39;</span><span class="p">)</span>
+<span class="n">fxx</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Choose the number of forecast hours (up to 48, multiple of 6):&#39;</span><span class="p">)</span>
+<span class="n">date</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1799</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1059</span><span class="p">)</span>
+
+<span class="c1">#Create lists to feed the datasets into</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">,</span> <span class="s1">&#39;06&#39;</span><span class="p">,</span> <span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;18&#39;</span><span class="p">,</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span> <span class="s1">&#39;30&#39;</span><span class="p">,</span> <span class="s1">&#39;36&#39;</span><span class="p">,</span> <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="s1">&#39;48&#39;</span><span class="p">]</span>
+<span class="n">H</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">#Create a looping statement that will read in all the data for each forecast hour</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fxx</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    
+
+    <span class="c1">#Read in the data</span>
+    <span class="n">H</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Herbie</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># model run date</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;hrrr&quot;</span><span class="p">,</span>  <span class="c1"># model name</span>
+        <span class="n">product</span><span class="o">=</span> <span class="s1">&#39;prs&#39;</span><span class="p">,</span> <span class="c1">#product</span>
+        <span class="n">fxx</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>  <span class="c1"># forecast lead time</span>
+              <span class="p">))</span>
+
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fxx</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">gh850</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">gh</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">gh700</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:700 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">gh</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">gh500</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:500 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">gh</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">gh300</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:300 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">gh</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">u850</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">v850</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">u700</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:700 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">v700</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:700 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">u500</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:500 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">v500</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:500 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">u300</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:300 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">v300</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:300 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1.9438</span><span class="p">),</span>
+            <span class="n">t850</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mi">273</span><span class="p">),</span>
+            <span class="n">r700</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:700 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">absv500</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:500 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">absv</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">coords</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">longitude</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+                <span class="n">latitude</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+                <span class="n">valid_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">valid_time</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">xarray</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:850 mb:&quot;</span><span class="p">,</span> <span class="n">remove_grib</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>  
+    <span class="p">))</span>
+    <span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="s1">&#39;wspd300&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">u300</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">knot</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">v300</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">knot</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F00 ┊ GRIB2 @ local ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F06 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F12 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F18 ┊ GRIB2 @ aws ┊ IDX @ aws
+✅ Found ┊ model=hrrr ┊ product=prs ┊ 2024-Apr-25 00:00 UTC F24 ┊ GRIB2 @ aws ┊ IDX @ aws
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we read in our data, let’s see what we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 152MB
+Dimensions:     (y: 1059, x: 1799)
+Coordinates:
+    longitude   (y, x) float64 15MB 237.3 237.3 237.3 ... 299.0 299.0 299.1
+    latitude    (y, x) float64 15MB 21.14 21.15 21.15 ... 47.86 47.85 47.84
+    valid_time  datetime64[ns] 8B 2024-04-25
+    step        timedelta64[ns] 8B 00:00:00
+Dimensions without coordinates: y, x
+Data variables: (12/16)
+    gh850       (y, x) float32 8MB 1.535e+03 1.535e+03 ... 1.362e+03 1.361e+03
+    gh700       (y, x) float32 8MB 3.168e+03 3.168e+03 ... 2.91e+03 2.911e+03
+    gh500       (y, x) float32 8MB 5.863e+03 5.863e+03 ... 5.491e+03 5.492e+03
+    gh300       (y, x) float32 8MB 9.62e+03 9.62e+03 ... 9.098e+03 9.099e+03
+    u850        (y, x) float32 8MB -2.01 -1.889 -1.889 ... 8.316 8.316 8.316
+    v850        (y, x) float32 8MB -5.106 -4.984 -4.863 ... 1.697 1.819 1.94
+    ...          ...
+    u300        (y, x) float32 8MB 74.32 74.32 74.19 ... -3.679 -3.436 -3.071
+    v300        (y, x) float32 8MB 12.03 12.03 12.03 11.91 ... 54.07 53.7 53.22
+    t850        (y, x) float32 8MB 16.66 16.66 16.66 16.66 ... 2.909 2.971 2.971
+    r700        (y, x) float32 8MB 23.05 23.05 23.05 23.05 ... 34.3 34.8 35.3
+    absv500     (y, x) float32 8MB 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
+    wspd300     (y, x) float32 8MB 75.28 75.28 75.16 75.14 ... 54.19 53.81 53.31</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-6ddb7d91-a800-4235-9ffd-e979ee82ce21' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-6ddb7d91-a800-4235-9ffd-e979ee82ce21' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span>y</span>: 1059</li><li><span>x</span>: 1799</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-26467b8d-1c19-4c95-bed8-4d09aad39cd8' class='xr-section-summary-in' type='checkbox'  checked><label for='section-26467b8d-1c19-4c95-bed8-4d09aad39cd8' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>longitude</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>237.3 237.3 237.3 ... 299.0 299.1</div><input id='attrs-19b1944f-5c71-4d73-b1d7-986e911022a4' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-19b1944f-5c71-4d73-b1d7-986e911022a4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-51da95b2-5821-4b55-80d1-c4323465696d' class='xr-var-data-in' type='checkbox'><label for='data-51da95b2-5821-4b55-80d1-c4323465696d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[237.280472  , 237.30713868, 237.3338097 , ..., 287.6569408 ,
+        287.68361332, 287.71028151],
+       [237.27297501, 237.29964881, 237.32632695, ..., 287.66442108,
+        287.69110073, 287.71777603],
+       [237.26547368, 237.2921546 , 237.31883986, ..., 287.6719057 ,
+        287.69859247, 287.7252749 ],
+       ...,
+       [225.9351904 , 225.97171577, 226.00825329, ..., 298.97907406,
+        299.0156158 , 299.05214538],
+       [225.91986142, 225.95639874, 225.99294822, ..., 298.99437498,
+        299.03092868, 299.06747022],
+       [225.90452027, 225.94106954, 225.97763099, ..., 299.00968806,
+        299.04625373, 299.08280723]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>latitude</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>21.14 21.15 21.15 ... 47.85 47.84</div><input id='attrs-84e66c20-6fa7-47f4-9837-862e8668fe87' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-84e66c20-6fa7-47f4-9837-862e8668fe87' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c002f7e2-c9e5-47b1-88a0-32c07db2516a' class='xr-var-data-in' type='checkbox'><label for='data-c002f7e2-c9e5-47b1-88a0-32c07db2516a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[21.138123  , 21.14511004, 21.1520901 , ..., 21.1545089 ,
+        21.14753125, 21.14054663],
+       [21.16299459, 21.1699845 , 21.17696744, ..., 21.17938723,
+        21.1724067 , 21.16541921],
+       [21.18786863, 21.19486142, 21.20184723, ..., 21.20426802,
+        21.19728462, 21.19029425],
+       ...,
+       [47.78955926, 47.799849  , 47.81012868, ..., 47.81369093,
+        47.80341474, 47.79312849],
+       [47.81409316, 47.82438621, 47.8346692 , ..., 47.83823259,
+        47.8279531 , 47.81766354],
+       [47.8386235 , 47.84891986, 47.85920615, ..., 47.86277069,
+        47.85248789, 47.84219502]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>valid_time</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2024-04-25</div><input id='attrs-7452d371-3ce2-4ef3-9133-24a29f5c54e7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7452d371-3ce2-4ef3-9133-24a29f5c54e7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3c491908-7f66-4b3b-85f0-59f887b41fed' class='xr-var-data-in' type='checkbox'><label for='data-3c491908-7f66-4b3b-85f0-59f887b41fed' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;2024-04-25T00:00:00.000000000&#x27;, dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>step</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>timedelta64[ns]</div><div class='xr-var-preview xr-preview'>00:00:00</div><input id='attrs-ba54acf6-1612-40ba-8220-6e924a7fe735' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ba54acf6-1612-40ba-8220-6e924a7fe735' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-98d87ea6-cf88-4554-b625-082043f9b7fd' class='xr-var-data-in' type='checkbox'><label for='data-98d87ea6-cf88-4554-b625-082043f9b7fd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(0, dtype=&#x27;timedelta64[ns]&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-036f2f90-cc86-4e85-85da-236dac2cdc33' class='xr-section-summary-in' type='checkbox'  ><label for='section-036f2f90-cc86-4e85-85da-236dac2cdc33' class='xr-section-summary' >Data variables: <span>(16)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>gh850</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>1.535e+03 1.535e+03 ... 1.361e+03</div><input id='attrs-19ea0a05-6cb4-4b54-98cc-3094170c2706' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-19ea0a05-6cb4-4b54-98cc-3094170c2706' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-90721fa0-f680-4c8b-b92d-02510a45fca0' class='xr-var-data-in' type='checkbox'><label for='data-90721fa0-f680-4c8b-b92d-02510a45fca0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[1535.0374, 1535.0686, 1535.1311, ..., 1543.8186, 1543.8186,
+        1543.8186],
+       [1535.0061, 1535.0999, 1535.1936, ..., 1543.7561, 1543.7561,
+        1543.7874],
+       [1534.9749, 1535.0999, 1535.2561, ..., 1543.6936, 1543.7249,
+        1543.7561],
+       ...,
+       [1418.0061, 1418.1624, 1418.3186, ..., 1361.9749, 1361.8499,
+        1361.7561],
+       [1417.7561, 1417.8811, 1417.9749, ..., 1361.7874, 1361.6936,
+        1361.5999],
+       [1417.5061, 1417.5686, 1417.6624, ..., 1361.5999, 1361.5061,
+        1361.4436]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>gh700</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>3.168e+03 3.168e+03 ... 2.911e+03</div><input id='attrs-d0096819-1692-419b-ace5-69c257974486' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-d0096819-1692-419b-ace5-69c257974486' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ce397aa2-205a-4927-9c36-a7f278731f87' class='xr-var-data-in' type='checkbox'><label for='data-ce397aa2-205a-4927-9c36-a7f278731f87' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[3167.795 , 3167.8574, 3167.8887, ..., 3169.8574, 3169.92  ,
+        3170.0137],
+       [3167.5762, 3167.67  , 3167.7637, ..., 3169.6387, 3169.7324,
+        3169.8262],
+       [3167.3574, 3167.4824, 3167.6387, ..., 3169.4512, 3169.545 ,
+        3169.6387],
+       ...,
+       [2977.3262, 2977.4512, 2977.5762, ..., 2910.2324, 2910.5137,
+        2910.795 ],
+       [2976.9824, 2977.0762, 2977.2012, ..., 2910.045 , 2910.3574,
+        2910.6387],
+       [2976.6387, 2976.7012, 2976.795 , ..., 2909.8887, 2910.2012,
+        2910.5137]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>gh500</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>5.863e+03 5.863e+03 ... 5.492e+03</div><input id='attrs-8eb1f425-0892-48fd-b559-38a5a8d36fae' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8eb1f425-0892-48fd-b559-38a5a8d36fae' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-60ac8d34-0a14-43f5-90f7-4b0735acf3cb' class='xr-var-data-in' type='checkbox'><label for='data-60ac8d34-0a14-43f5-90f7-4b0735acf3cb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[5863.214 , 5863.245 , 5863.2764, ..., 5864.964 , 5865.0264,
+        5865.089 ],
+       [5862.9014, 5862.964 , 5863.0264, ..., 5864.714 , 5864.7764,
+        5864.839 ],
+       [5862.589 , 5862.714 , 5862.8076, ..., 5864.495 , 5864.5576,
+        5864.62  ],
+       ...,
+       [5559.5576, 5559.464 , 5559.339 , ..., 5490.495 , 5491.339 ,
+        5492.1514],
+       [5559.0264, 5558.9014, 5558.8076, ..., 5490.339 , 5491.214 ,
+        5492.089 ],
+       [5558.464 , 5558.37  , 5558.2764, ..., 5490.1826, 5491.089 ,
+        5492.0264]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>gh300</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>9.62e+03 9.62e+03 ... 9.099e+03</div><input id='attrs-1c82ac46-66e0-4e08-850a-673f7c46a727' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1c82ac46-66e0-4e08-850a-673f7c46a727' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6ef941a5-b8f7-45b0-a8bd-fbf8b7980f15' class='xr-var-data-in' type='checkbox'><label for='data-6ef941a5-b8f7-45b0-a8bd-fbf8b7980f15' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[9619.928, 9619.928, 9619.928, ..., 9663.428, 9663.584, 9663.74 ],
+       [9619.303, 9619.334, 9619.365, ..., 9662.959, 9663.084, 9663.209],
+       [9618.646, 9618.74 , 9618.803, ..., 9662.49 , 9662.584, 9662.678],
+       ...,
+       [9174.24 , 9174.115, 9173.99 , ..., 9097.021, 9098.115, 9099.178],
+       [9173.49 , 9173.396, 9173.271, ..., 9096.896, 9098.053, 9099.178],
+       [9172.74 , 9172.646, 9172.553, ..., 9096.803, 9097.99 , 9099.178]],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u850</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>-2.01 -1.889 -1.889 ... 8.316 8.316</div><input id='attrs-bd499be0-632e-4acd-91a9-a7ab37c52fcf' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-bd499be0-632e-4acd-91a9-a7ab37c52fcf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a7bd65a9-667d-42b6-8264-37aa6b80ab2a' class='xr-var-data-in' type='checkbox'><label for='data-a7bd65a9-667d-42b6-8264-37aa6b80ab2a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[-2.0103498, -1.8888621, -1.8888621, ..., -5.290512 , -5.290512 ,
+        -5.290512 ],
+       [-2.0103498, -2.0103498, -1.8888621, ..., -5.290512 , -5.290512 ,
+        -5.1690245],
+       [-2.1318371, -2.0103498, -2.0103498, ..., -5.290512 , -5.290512 ,
+        -5.1690245],
+       ...,
+       [18.39955  , 18.278063 , 18.278063 , ...,  9.1665   ,  9.1665   ,
+         9.045012 ],
+       [18.278063 , 18.278063 , 18.156574 , ...,  8.680551 ,  8.680551 ,
+         8.680551 ],
+       [18.278063 , 18.156574 , 18.156574 , ...,  8.316088 ,  8.316088 ,
+         8.316088 ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v850</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>-5.106 -4.984 -4.863 ... 1.819 1.94</div><input id='attrs-14076125-fa6d-49dc-a02b-6d2b93cd0ad9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-14076125-fa6d-49dc-a02b-6d2b93cd0ad9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-75e1da9f-0865-4ca3-91e8-baa88be6b73b' class='xr-var-data-in' type='checkbox'><label for='data-75e1da9f-0865-4ca3-91e8-baa88be6b73b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[-5.10596  , -4.9844723, -4.862985 , ..., -4.62001  , -4.377035 ,
+        -4.2555475],
+       [-5.2274475, -5.10596  , -4.9844723, ..., -4.7414975, -4.4985223,
+        -4.2555475],
+       [-5.348935 , -5.348935 , -5.2274475, ..., -4.7414975, -4.62001  ,
+        -4.377035 ],
+       ...,
+       [-1.8257976, -1.70431  , -1.5828226, ...,  1.8188274,  1.9403149,
+         2.0618024],
+       [-1.8257976, -1.70431  , -1.5828226, ...,  1.6973399,  1.9403149,
+         2.0618024],
+       [-1.8257976, -1.70431  , -1.5828226, ...,  1.6973399,  1.8188274,
+         1.9403149]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u700</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>17.16 17.16 17.16 ... 10.36 10.24</div><input id='attrs-8c10c09b-82dd-4934-91b3-b18f0fe61a8f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8c10c09b-82dd-4934-91b3-b18f0fe61a8f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3bc865a3-cf46-4ddd-97dc-29fbf5e8e081' class='xr-var-data-in' type='checkbox'><label for='data-3bc865a3-cf46-4ddd-97dc-29fbf5e8e081' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[17.160032 , 17.160032 , 17.160032 , ...,  6.8335958,  6.8335958,
+         6.712108 ],
+       [17.28152  , 17.28152  , 17.403008 , ...,  6.9550834,  6.8335958,
+         6.8335958],
+       [17.524496 , 17.524496 , 17.524496 , ...,  7.076571 ,  6.9550834,
+         6.8335958],
+       ...,
+       [22.62697  , 22.62697  , 22.62697  , ..., 10.721196 , 10.599709 ,
+        10.478221 ],
+       [22.262508 , 22.262508 , 22.262508 , ..., 10.599709 , 10.478221 ,
+        10.356733 ],
+       [22.019533 , 22.019533 , 22.019533 , ..., 10.478221 , 10.356733 ,
+        10.235246 ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v700</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>-4.606 -4.485 ... 14.71 14.59</div><input id='attrs-787410d3-4bbb-48fe-a215-11ab63531c6c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-787410d3-4bbb-48fe-a215-11ab63531c6c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-161161df-66d1-46ab-8005-5d9908500ddf' class='xr-var-data-in' type='checkbox'><label for='data-161161df-66d1-46ab-8005-5d9908500ddf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[-4.6061254, -4.4846377, -4.4846377, ...,  6.0847745,  6.0847745,
+         6.0847745],
+       [-4.4846377, -4.4846377, -4.4846377, ...,  6.206262 ,  6.206262 ,
+         6.206262 ],
+       [-4.4846377, -4.4846377, -4.3631506, ...,  6.3277493,  6.449237 ,
+         6.449237 ],
+       ...,
+       [-1.8119129, -1.8119129, -1.8119129, ..., 14.9533615, 14.9533615,
+        14.831874 ],
+       [-1.8119129, -1.8119129, -1.8119129, ..., 14.9533615, 14.831874 ,
+        14.710387 ],
+       [-1.8119129, -1.8119129, -1.8119129, ..., 14.831874 , 14.710387 ,
+        14.5889   ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u500</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>33.64 33.64 33.64 ... 1.077 1.077</div><input id='attrs-5ea44b57-55f1-45c6-96b8-4e65494e6579' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5ea44b57-55f1-45c6-96b8-4e65494e6579' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d4a5bd18-9474-4dee-b29b-ffc4b6bdb7a9' class='xr-var-data-in' type='checkbox'><label for='data-d4a5bd18-9474-4dee-b29b-ffc4b6bdb7a9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[33.63579  , 33.63579  , 33.63579  , ..., 16.992004 , 16.992004 ,
+        16.992004 ],
+       [34.00025  , 34.00025  , 34.00025  , ..., 17.113491 , 17.113491 ,
+        17.113491 ],
+       [34.24323  , 34.24323  , 34.24323  , ..., 17.234978 , 17.234978 ,
+        17.234978 ],
+       ...,
+       [32.906864 , 32.906864 , 32.906864 , ...,  1.4416037,  1.4416037,
+         1.5630912],
+       [32.906864 , 32.906864 , 32.906864 , ...,  1.1986287,  1.3201162,
+         1.3201162],
+       [32.906864 , 32.906864 , 32.906864 , ...,  1.0771412,  1.0771412,
+         1.0771412]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v500</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>1.644 1.644 1.766 ... 46.11 45.74</div><input id='attrs-c75dda53-399c-436f-908e-ffc65f63f7ad' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c75dda53-399c-436f-908e-ffc65f63f7ad' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e5ea0b80-397a-41fb-9e75-1bfab0ec2631' class='xr-var-data-in' type='checkbox'><label for='data-e5ea0b80-397a-41fb-9e75-1bfab0ec2631' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[ 1.6441447,  1.6441447,  1.7656322, ..., 14.03587  , 14.157357 ,
+        14.157357 ],
+       [ 1.6441447,  1.6441447,  1.6441447, ..., 14.03587  , 14.03587  ,
+        14.157357 ],
+       [ 1.6441447,  1.6441447,  1.6441447, ..., 14.03587  , 14.03587  ,
+        14.157357 ],
+       ...,
+       [-6.1310554, -6.252543 , -6.37403  , ..., 46.716007 , 46.351543 ,
+        45.98708  ],
+       [-6.1310554, -6.252543 , -6.37403  , ..., 46.59452  , 46.230057 ,
+        45.865593 ],
+       [-6.1310554, -6.252543 , -6.37403  , ..., 46.47303  , 46.10857  ,
+        45.744106 ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u300</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>74.32 74.32 74.19 ... -3.436 -3.071</div><input id='attrs-ff71215c-52b5-4a0e-978a-5eb842864573' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ff71215c-52b5-4a0e-978a-5eb842864573' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6c7282c0-f9af-45e3-8a42-21cd84e3c816' class='xr-var-data-in' type='checkbox'><label for='data-6c7282c0-f9af-45e3-8a42-21cd84e3c816' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[74.31607  , 74.31607  , 74.19458  , ..., 50.01857  , 49.897083 ,
+        49.897083 ],
+       [74.43755  , 74.43755  , 74.31607  , ..., 50.140057 , 50.140057 ,
+        50.01857  ],
+       [74.559044 , 74.43755  , 74.43755  , ..., 50.383034 , 50.261543 ,
+        50.261543 ],
+       ...,
+       [45.037582 , 44.916096 , 44.916096 , ..., -3.557417 , -3.1929545,
+        -2.9499795],
+       [44.916096 , 44.79461  , 44.67312  , ..., -3.557417 , -3.314442 ,
+        -3.071467 ],
+       [44.79461  , 44.67312  , 44.551632 , ..., -3.6789045, -3.4359295,
+        -3.071467 ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v300</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>12.03 12.03 12.03 ... 53.7 53.22</div><input id='attrs-a12cfc87-5377-47b0-ae46-06c8983bfcdc' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a12cfc87-5377-47b0-ae46-06c8983bfcdc' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8cc4005b-40b8-4826-9e02-bbdad2c0df54' class='xr-var-data-in' type='checkbox'><label for='data-8cc4005b-40b8-4826-9e02-bbdad2c0df54' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[ 12.034418,  12.034418,  12.034418, ...,  26.734406,  26.734406,
+         26.612917],
+       [ 12.277392,  12.277392,  12.155906, ...,  26.855892,  26.855892,
+         26.734406],
+       [ 12.39888 ,  12.39888 ,  12.39888 , ...,  26.97738 ,  26.97738 ,
+         26.855892],
+       ...,
+       [-11.89862 , -11.89862 , -12.020107, ...,  54.433556,  53.947605,
+         53.58314 ],
+       [-11.777132, -11.89862 , -11.89862 , ...,  54.19058 ,  53.82612 ,
+         53.340168],
+       [-11.655644, -11.777132, -11.777132, ...,  54.06909 ,  53.704628,
+         53.21868 ]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>t850</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>16.66 16.66 16.66 ... 2.971 2.971</div><input id='attrs-de42381f-2e6f-4547-8680-655aa2a19869' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-de42381f-2e6f-4547-8680-655aa2a19869' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-85ac67df-77ea-4efa-9e5a-d29c2a58080c' class='xr-var-data-in' type='checkbox'><label for='data-85ac67df-77ea-4efa-9e5a-d29c2a58080c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[16.658813 , 16.658813 , 16.658813 , ..., 16.596313 , 16.596313 ,
+        16.596313 ],
+       [16.596313 , 16.596313 , 16.596313 , ..., 16.533813 , 16.533813 ,
+        16.596313 ],
+       [16.533813 , 16.533813 , 16.533813 , ..., 16.471313 , 16.533813 ,
+        16.533813 ],
+       ...,
+       [ 4.8463135,  4.8463135,  4.8463135, ...,  3.0338135,  3.0338135,
+         3.0963135],
+       [ 4.8463135,  4.8463135,  4.8463135, ...,  2.9713135,  2.9713135,
+         3.0338135],
+       [ 4.7838135,  4.7838135,  4.8463135, ...,  2.9088135,  2.9713135,
+         2.9713135]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>r700</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>23.05 23.05 23.05 ... 34.8 35.3</div><input id='attrs-72b4b306-59bd-4d94-a473-e5065f47539b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-72b4b306-59bd-4d94-a473-e5065f47539b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-881d43b4-90ae-4da6-a113-f535b5e970f6' class='xr-var-data-in' type='checkbox'><label for='data-881d43b4-90ae-4da6-a113-f535b5e970f6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[23.053387, 23.053387, 23.053387, ..., 32.303387, 32.553387,
+        32.803387],
+       [22.928387, 22.928387, 22.928387, ..., 32.178387, 32.428387,
+        32.678387],
+       [22.803387, 22.928387, 22.928387, ..., 32.053387, 32.303387,
+        32.553387],
+       ...,
+       [85.80339 , 86.05339 , 86.42839 , ..., 34.178387, 34.678387,
+        35.303387],
+       [86.05339 , 86.30339 , 86.55339 , ..., 34.178387, 34.678387,
+        35.303387],
+       [86.17839 , 86.55339 , 86.80339 , ..., 34.303387, 34.803387,
+        35.303387]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>absv500</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0</div><input id='attrs-b928d19d-d974-4cc0-9786-c1d84dec25d8' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b928d19d-d974-4cc0-9786-c1d84dec25d8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-763aee63-ea70-4b2f-9eca-acfb432c2958' class='xr-var-data-in' type='checkbox'><label for='data-763aee63-ea70-4b2f-9eca-acfb432c2958' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.e+00, 0.e+00, 0.e+00, ..., 0.e+00, 0.e+00, 0.e+00],
+       [0.e+00, 0.e+00, 0.e+00, ..., 1.e-05, 0.e+00, 0.e+00],
+       [0.e+00, 0.e+00, 0.e+00, ..., 1.e-05, 1.e-05, 0.e+00],
+       ...,
+       [0.e+00, 1.e-05, 2.e-05, ..., 2.e-05, 1.e-05, 0.e+00],
+       [0.e+00, 1.e-05, 1.e-05, ..., 1.e-05, 1.e-05, 0.e+00],
+       [0.e+00, 0.e+00, 0.e+00, ..., 0.e+00, 0.e+00, 0.e+00]],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wspd300</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>75.28 75.28 75.16 ... 53.81 53.31</div><input id='attrs-6d142eac-e555-48b1-99c7-440de1de4fe6' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6d142eac-e555-48b1-99c7-440de1de4fe6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-aa9910c0-9c85-44c9-b705-9aced7d1e82e' class='xr-var-data-in' type='checkbox'><label for='data-aa9910c0-9c85-44c9-b705-9aced7d1e82e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[75.284164, 75.284164, 75.16424 , ..., 56.71495 , 56.607838,
+        56.550564],
+       [75.443245, 75.443245, 75.30368 , ..., 56.879383, 56.879383,
+        56.71495 ],
+       [75.582954, 75.46311 , 75.46311 , ..., 57.150932, 57.043858,
+        56.986504],
+       ...,
+       [46.58284 , 46.465393, 46.49665 , ..., 54.549675, 54.04201 ,
+        53.664284],
+       [46.434433, 46.34797 , 46.23056 , ..., 54.30722 , 53.92807 ,
+        53.428528],
+       [46.286186, 46.19944 , 46.081978, ..., 54.194103, 53.814426,
+        53.30724 ]], dtype=float32)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1b36ee52-db4d-4c98-b8ca-b7ebfca9455d' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-1b36ee52-db4d-4c98-b8ca-b7ebfca9455d' class='xr-section-summary'  title='Expand/collapse section'>Indexes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-ac59372d-a585-4262-b7fb-6616238b6d65' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-ac59372d-a585-4262-b7fb-6616238b6d65' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+</div>
+<p>It is important that we downsample the data to allow our plots to generate quicker and make them easier to read:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Create lists for the downsampled data</span>
+<span class="n">t850_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u850_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v850_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u850_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v850_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">r700_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u700_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v700_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u700_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v700_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">absv500_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u500_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v500_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u500_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v500_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">wspd300_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u300_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v300_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u300_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v300_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lon_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lat_barbs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">gh850_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">gh700_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">gh500_ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">gh300_ds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">interval</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1">#Further downsample the wind barbs to cut down on overlap</span>
+<span class="n">barb_interval</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">length</span> <span class="o">=</span> <span class="mf">5.5</span>
+
+<span class="c1">#Create the downsample function</span>
+<span class="k">def</span> <span class="nf">downsample_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[::</span><span class="n">interval</span><span class="p">,</span> <span class="p">::</span><span class="n">interval</span><span class="p">]</span>
+<span class="n">lon_ds</span> <span class="o">=</span> <span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span>
+<span class="n">lat_ds</span> <span class="o">=</span> <span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span> 
+
+<span class="c1">#Fill in the other lists with the downsampled data</span>
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fxx</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">t850_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="s1">&#39;t850&#39;</span><span class="p">],</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u850_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">u850</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">v850_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">v850</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u850_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">u850_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">v850_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">v850_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">r700_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="s1">&#39;r700&#39;</span><span class="p">],</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u700_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">u700</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">v700_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">v700</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u700_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">u700_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">v700_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">v700_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">absv500_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="s1">&#39;absv500&#39;</span><span class="p">],</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u500_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">u500</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">v500_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">v500</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u500_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">u500_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">v500_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">v500_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">wspd300_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="s1">&#39;wspd300&#39;</span><span class="p">],</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u300_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">u300</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">v300_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">v300</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">u300_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">u300_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">v300_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">v300_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">lon_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">lat_barbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">lat_ds</span><span class="p">,</span> <span class="n">barb_interval</span><span class="p">))</span>
+    <span class="n">gh850_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">gh850</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">gh700_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">gh700</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">gh500_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">gh500</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+    <span class="n">gh300_ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">downsample_data</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">gh300</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+
+<span class="n">lon</span> <span class="o">=</span> <span class="n">lon_ds</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">lat_ds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="plot-the-data">
+<h2>Plot the data<a class="headerlink" href="#plot-the-data" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Here’s where we put it all together to get our four-panel plots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We have the synoptic extent set to the full CONUS</span>
+<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">125</span><span class="p">,</span> <span class="o">-</span><span class="mi">65</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+<span class="c1">#WFIP3 Site Coordinates:</span>
+<span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span> <span class="o">=</span> <span class="mf">41.4456</span><span class="p">,</span> <span class="o">-</span><span class="mf">71.4357</span>  <span class="c1">#Rhode Island Radar Wind Profiler</span>
+<span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="mf">41.2453</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.105</span>  <span class="c1">#Nantucket Sodar</span>
+<span class="n">lat3</span><span class="p">,</span> <span class="n">lon3</span> <span class="o">=</span> <span class="mf">41.17</span><span class="p">,</span> <span class="o">-</span><span class="mf">71.58</span>  <span class="c1">#Block Island Radar Wind Profiler  </span>
+<span class="c1">#Feel free to add or change locations if desired</span>
+
+<span class="c1">#Set font size</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.titlesize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;13&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labelsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;12&#39;</span>
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fxx</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="c1">#300-hPa winds</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">wspd300_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">BuPu</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">gh300_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15000</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span> 
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">lat_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">u300_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">v300_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="c1">#This is where we mark our locations on the map.  You can always copy and paste</span>
+    <span class="c1">#and change the lon/lat values if you added in more sites above.  We will do this </span>
+    <span class="c1">#for all four maps</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon3</span><span class="p">,</span> <span class="n">lat3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;a) Time: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1"> 00 UTC HRRR FH </span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s1"> Wind Speed (kts) at 300 hPa&#39;</span><span class="p">)</span>
+
+    <span class="c1">#500-hPa Absolute Vorticity</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">absv500_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.00101</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">),</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">PuOr_r</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">gh500_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15000</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> 
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">lat_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">u500_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">v500_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon3</span><span class="p">,</span> <span class="n">lat3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;b) Time: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1"> 00 UTC HRRR FH </span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s1"> Absolute Vorticity at 500 hPa&#39;</span><span class="p">)</span>
+
+    <span class="c1">#700-hPa Relative Humidity</span>
+    <span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">r700_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greens</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">gh700_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15000</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> 
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">lat_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">u700_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">v700_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon3</span><span class="p">,</span> <span class="n">lat3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;c) Time: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1"> 00 UTC HRRR FH </span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s1"> Relative Humidity at 700 hPa&#39;</span><span class="p">)</span>
+
+    <span class="c1">#850-hPa temperature</span>
+    <span class="n">ax4</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">ax4</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">t850_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax4</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon_ds</span><span class="p">,</span> <span class="n">lat_ds</span><span class="p">,</span> <span class="n">gh850_ds</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15000</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> 
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">lat_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">u850_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">v850_barbs</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon3</span><span class="p">,</span> <span class="n">lat3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;d) Time: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1"> 00 UTC HRRR FH </span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s1"> Temperature (C) at 850 hPa&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">_4Panel_FH_</span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s1">_HRRR.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="make-a-gif">
+<h2>Make a Gif<a class="headerlink" href="#make-a-gif" title="Link to this heading"><i class="fas fa-link"></i></a></h2>
+<p>Gifs are fun!  Let’s make one with the plots we created (if we made more than one or two):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List of image filenames</span>
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fxx</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s2">_4Panel_FH_</span><span class="si">{</span><span class="n">fh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s2">_HRRR.png&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    
+<span class="c1"># Create Gif</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>
+<span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s2">_4Panel_loop_HRRR.gif&quot;</span><span class="p">,</span> 
+                <span class="n">images</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="c1">#Show Gif</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../../../Downloads/</span><span class="si">{</span><span class="n">yr</span><span class="si">}{</span><span class="n">m</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s2">_4Panel_loop_HRRR.gif&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">IPImage</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;gif&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/63339b6fc6a95c48a3a0f398b89165da93ff1b89f47d6094226db3794b103ec7.gif" src="../_images/63339b6fc6a95c48a3a0f398b89165da93ff1b89f47d6094226db3794b103ec7.gif" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                  </article>
+
+                
+                
+
+                
+                
+                  <footer class="prev-next-footer">
+                    
+<div class="prev-next-area">
+</div>
+                  </footer>
+                
+              </div>
+
+              
+              
+                
+                  <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-data">Plot the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-gif">Make a Gif</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+                
+              
+
+
+                
+                <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://binder.projectpythia.org/v2/gh/ProjectPythia/cookbook-template/main?urlpath=lab/tree/notebooks/HRRR_Herbie_4_panel_plot.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/edit/main/notebooks/HRRR_Herbie_4_panel_plot.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ProjectPythia/cookbook-template/issues/new?title=Issue%20on%20page%20%2Fnotebooks/HRRR_Herbie_4_panel_plot.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/HRRR_Herbie_4_panel_plot.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+            </div>
+
+            <footer class="bd-footer-content">
+              
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By the <a href="https://projectpythia.org/">Project Pythia</a> Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 4 August 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+            </footer>
+
+        </main>
+    </div>
+  </div>
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+     
+  
+  
+  
+  
+    <div class="footer-items__start">
+      <div class="container-fluid m-0 p-0">
+      
+        <div class="footer-item">
+  <div class="container-fluid footer-logos">
+    <div class="container-xl">
+      <div class="row d-flex flex-wrap align-items-center">
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="NCAR" src="../_images/NSF-NCAR_Lockup-UCAR-Dark_102523.svg" style="width: 100%">
+        </div>
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="Unidata" src="../_images/Unidata_logo_horizontal_1200x300.svg" style="width: 100%">
+        </div>
+        <div class="d-flex col-lg-3 col-md-4 col-sm-6 p-2 mx-auto">
+          <img alt="UAlbany" src="../_images/UAlbany-A2-logo-purple-gold.svg" style="width: 100%">
+        </div>
+      </div>
+    </div>
+  </div></div>
+      
+        <div class="footer-item">  <div class="container-fluid footer-info">
+    <div class="container-xl">
+      <div class="d-flex justify-content-center">
+        <p class="py-1 m-0">
+            &copy;&nbsp;2024.
+        
+          By the <a href="https://projectpythia.org/">Project Pythia</a> Community.
+        
+          Last updated on 4 August 2024.
+        </p>
+      </div>
+    </div>
+  </div></div>
+      
+        <div class="footer-item"><div class="container-fluid footer-extra">
+  <div class="container">
+    <center>
+      Theme by <a href="https://projectpythia.org">Project Pythia</a>. All code
+      in Pythia Cookbooks is licensed under
+      <a href="https://opensource.org/license/apache-2-0">Apache 2.0</a>. All
+      other non-code content is licensed under
+      <a href="https://creativecommons.org/licenses/by/4.0/">
+        Creative Commons BY 4.0 (CC BY 4.0)</a
+      >.
+    </center>
+    <br /><br />
+    <div class="row">
+      <p class="m-0">
+        <img
+          src="../_static/footer-logo-nsf.png"
+          style="float: left; width: 60px; height: 60px; margin-right: 1rem"
+        />
+        This material is based upon work supported by the National Science
+        Foundation under Grant Nos. 2026863 and 2026899. Any opinions, findings,
+        and conclusions or recommendations expressed in this material are those
+        of the author(s) and do not necessarily reflect the views of the
+        National Science Foundation.
+      </p>
+    </div>
+  </div>
+</div></div>
+      
+      </div>
+    </div>
+  
+
+  </footer>
+  </body>
+</html>
